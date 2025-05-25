@@ -1,0 +1,35 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'build'
+  - '-t'
+  - 'us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'
+  - '.'
+
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'apply'
+  - '-f'
+  - 'k8s/dev'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=microservices-cluster'
+
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'set'
+  - 'image'
+  - 'deployment/microservice-deployment'
+  - 'microservice-container=us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'
+  - '--namespace=dev'
+  env:
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'
+  - 'CLOUDSDK_CONTAINER_CLUSTER=microservices-cluster'
+
+images:
+- 'us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'

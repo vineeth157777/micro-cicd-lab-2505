@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: microservice-deployment
+  namespace: dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: microservice-app
+  template:
+    metadata:
+      labels:
+        app: microservice-app
+    spec:
+      containers:
+      - name: microservice-container
+        image: us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:latest
+        ports:
+        - containerPort: 8080

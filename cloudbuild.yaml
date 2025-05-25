@@ -33,3 +33,6 @@ steps:
 
 images:
 - 'us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'
+
+options:
+  logging: CLOUD_LOGGING_ONLY

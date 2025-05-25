@@ -4,7 +4,7 @@ steps:
   - 'build'
   - '-t'
   - 'us-central1-docker.pkg.dev/micro-cicd-vin-2505-1/microservices-repo/microservice-app:$SHORT_SHA'
-  - '.'
+  - './app' 
 
 - name: 'gcr.io/cloud-builders/docker'
   args:
